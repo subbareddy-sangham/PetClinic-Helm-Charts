@@ -1,0 +1,20 @@
+# values.yaml (optional)
+
+replicaCount: 1                 # Default replica count (override per environment as needed)
+
+image:
+  repository: my-docker-repo/petclinic
+  pullPolicy: IfNotPresent
+  tag: "latest"                 # Default tag (can override in each environment-specific file)
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
