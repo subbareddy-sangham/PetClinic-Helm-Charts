@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: petclinic-service-prod         # Unique service name for production
-  namespace: prod                      # Scoped to the 'prod' namespace
+  name: {{ .Values.serviceName }}                  # Service name from values
+  namespace: {{ .Values.namespace }}               # Namespace from values
   labels:
-    app: petclinic                     # Identifies the service as PetClinic
-    environment: production            # Optional label for environment distinction
+    app: petclinic                                 # Common app label
+    environment: {{ .Values.environment | default "development" }}  # Optional environment label
 spec:
-  type: LoadBalancer                   # Exposes the service externally
+  type: {{ .Values.service.type | default "ClusterIP" }}  # Service type from values
   ports:
-    - port: 80                         # External port that users will access
-      targetPort: 8081                 # Target port where PetClinic is running on the container
-      protocol: TCP                    # Protocol for HTTP communication
-      name: http                       # Name for the port, useful for monitoring
+    - port: {{ .Values.service.port | default 80 }}       # External port from values
+      targetPort: {{ .Values.service.targetPort | default 8080 }} # Target port from values
+      protocol: TCP
+      name: http
   selector:
-    app: petclinic                     # Selects PetClinic pods labeled with 'app: petclinic' in the 'prod' namespace
+    app: petclinic
