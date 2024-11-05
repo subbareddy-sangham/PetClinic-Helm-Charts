@@ -5,7 +5,7 @@ metadata:
   labels:
     app: petclinic
 spec:
-  replicas: 2
+  replicas: {{ .Values.replicaCount | default 2 }}       # Allows setting replica count from values.yaml
   selector:
     matchLabels:
       app: petclinic
@@ -16,24 +16,24 @@ spec:
     spec:
       containers:
         - name: petclinic
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"   # Image from values.yaml
           ports:
             - containerPort: 8080
           env:
             - name: MYSQL_URL
-              value: "jdbc:mysql://mysql:3306/{{ .Values.mysql.database }}"
+              value: "jdbc:mysql://{{ .Values.mysql.host | default 'mysql' }}:3306/{{ .Values.mysql.database }}" # Configurable MySQL service host
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.mysqlSecretName }}
+                  name: "{{ .Values.secrets.mysqlSecretName }}"               # Ensuring the secret name is quoted
                   key: MYSQL_USER
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.mysqlSecretName }}
+                  name: "{{ .Values.secrets.mysqlSecretName }}"               # Quoted secret name
                   key: MYSQL_PASSWORD
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.mysqlSecretName }}
+                  name: "{{ .Values.secrets.mysqlSecretName }}"               # Quoted secret name
                   key: MYSQL_ROOT_PASSWORD
