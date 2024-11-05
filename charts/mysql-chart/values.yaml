@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: mysql
+  tag: "8.0"
+  pullPolicy: IfNotPresent
+
+mysql:
+  database: petclinic
+  user: petclinic_user
+  password: secure_password    # Ensure this is overridden by a Secret in a real environment
+  rootPassword: root_password  # Same for root password
+
+persistence:
+  enabled: true
+  storageClass: "standard"
+  accessMode: ReadWriteOnce
+  size: 10Gi
+
+service:
+  type: ClusterIP
+  port: 3306
