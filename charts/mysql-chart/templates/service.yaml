@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}                 # Dynamic name based on values.yaml
+  namespace: {{ .Values.namespace }}               # Namespace from values.yaml
+  labels:
+    app: mysql
+    environment: {{ .Values.environment | default "development" }}  # Environment label
+spec:
+  type: {{ .Values.service.type | default "ClusterIP" }}  # Service type, default is ClusterIP
+  ports:
+    - port: {{ .Values.service.port | default 3306 }}     # External service port
+      targetPort: {{ .Values.service.targetPort | default 3306 }}  # Target port on MySQL container
+      protocol: TCP
+  selector:
+    app: mysql  # Matches MySQL pods with this label
