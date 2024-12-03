@@ -1,4 +1,4 @@
-// vars/checkoutCode.groovy
+
 def call(Map params) {
     assert params.containsKey('url') : "Missing required parameter: url"
     assert params.containsKey('credentialsId') : "Missing required parameter: credentialsId"
