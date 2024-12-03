@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sonar-config
+  namespace: {{ .Values.namespace }}
+data:
+  SONAR_URL: {{ .Values.sonar.url | quote }}
+  SONAR_PROJECT_KEY: {{ .Values.sonar.projectKey | quote }}
