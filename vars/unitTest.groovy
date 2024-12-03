@@ -5,13 +5,22 @@ def call(Map params = [:]) {
 
     echo "Running tests for stage: ${stageName}"
     echo "Command: ${testCommand}"
-
+    echo "Workspace: ${pwd()}"
+    
     try {
+        // List current workspace files for debugging
+        sh 'ls -la'
+
+        // Run the test command
         sh testCommand
         echo "Tests completed successfully."
 
-        // Publish test reports if they exist
-        junit "${reportDir}/*.xml"
+        // Check for and publish test reports
+        if (fileExists("${reportDir}/*.xml")) {
+            junit "${reportDir}/*.xml"
+        } else {
+            echo "No test reports found in ${reportDir}"
+        }
     } catch (Exception e) {
         error "Tests failed during ${stageName}: ${e.message}"
     }
