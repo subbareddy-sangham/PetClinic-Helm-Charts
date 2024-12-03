@@ -1,2 +1,6 @@
 namespace: petclinic-dev-qa
 
+sonar:
+  url: https://3.86.108.255:9000
+  projectKey: "petclinic"
+
