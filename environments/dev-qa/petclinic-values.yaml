@@ -4,6 +4,7 @@ environment:
 
 aws:
   region: "ap-south-1"
+  serviceAccountName: eks-secrets-sa
 
 eks:
   clusterName: "devops-petclinicapp-dev-ap-south-1"
