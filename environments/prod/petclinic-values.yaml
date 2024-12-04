@@ -1,6 +1,6 @@
 environment:
-  name: "uat"
-  namespace: "petclinic-uat"
+  name: "prod"
+  namespace: "petclinic-prod"
 
 aws:
   region: "ap-south-1"
@@ -16,11 +16,11 @@ trivy:
   cache: "/var/lib/jenkins/trivy-db"
 
 docker:
-  ecrRepoUrl: "905418425077.dkr.ecr.ap-south-1.amazonaws.com/uat-petclinic-pro"
+  ecrRepoUrl: "905418425077.dkr.ecr.ap-south-1.amazonaws.com/prod-petclinic-pro"
   awsRegion: "ap-south-1"
 
 sonarqube:
-  projectKey: "petclinic-uat"
+  projectKey: "petclinic-prod"
 
 slack:
   channel: "#uat"
