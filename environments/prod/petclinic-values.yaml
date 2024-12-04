@@ -1,1 +1,36 @@
-namespace: petclinic-prod
+environment:
+  name: "uat"
+  namespace: "petclinic-uat"
+
+aws:
+  region: "ap-south-1"
+
+eks:
+  clusterName: "devops-petclinicapp-dev-ap-south-1"
+
+git:
+  repo: "https://github.com/Subbu2025/spring-petclinic-pro.git"
+  branch: "main"
+
+trivy:
+  cache: "/var/lib/jenkins/trivy-db"
+
+docker:
+  ecrRepoUrl: "905418425077.dkr.ecr.ap-south-1.amazonaws.com/uat-petclinic-pro"
+  awsRegion: "ap-south-1"
+
+sonarqube:
+  projectKey: "petclinic-uat"
+
+slack:
+  channel: "#uat"
+
+secrets:
+  awsSecrets: # Reference the AWS Secrets Manager keys instead of hardcoded values
+    mysqlRootPasswordSecretName: "mysql-root-password"
+    mysqlDatabaseSecretName: "mysql-database"
+    mysqlUserSecretName: "mysql-user"
+    mysqlPasswordSecretName: "mysql-password"
+    sonarqubeTokenSecretName: "sonarqube-token"
+    awsAccessKeyIdSecretName: "aws-access-key-id"
+    awsSecretAccessKeySecretName: "aws-secret-access-key"
