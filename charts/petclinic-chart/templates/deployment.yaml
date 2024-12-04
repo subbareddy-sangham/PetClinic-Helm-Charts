@@ -18,7 +18,7 @@ spec:
         - name: petclinic
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"   # Image from values.yaml
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
           env:
             - name: MYSQL_URL
               value: "jdbc:mysql://{{ .Values.mysql.host | default 'mysql' }}:3306/{{ .Values.mysql.database }}" # Configurable MySQL service host
