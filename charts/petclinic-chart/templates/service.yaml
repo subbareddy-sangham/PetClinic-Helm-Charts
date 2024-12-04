@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.service.type | default "ClusterIP" }}  # Service type from values
   ports:
     - port: {{ .Values.service.port | default 80 }}       # External port from values
-      targetPort: {{ .Values.service.targetPort | default 8080 }} # Target port from values
+      targetPort: {{ .Values.service.targetPort | default 8081 }} # Target port from values
       protocol: TCP
       name: http
   selector:
