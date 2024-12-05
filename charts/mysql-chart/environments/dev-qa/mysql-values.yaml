@@ -27,8 +27,8 @@ mysql:
 service:
   name: "mysql-service"  # Add this field to define the service name
   type: "ClusterIP"
-  port: 3306
-  targetPort: 3306
+  port: "3306"
+  targetPort: "3306"
 
 aws:
   region: "ap-south-1"
