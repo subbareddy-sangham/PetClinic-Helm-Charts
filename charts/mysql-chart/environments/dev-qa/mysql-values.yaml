@@ -23,4 +23,6 @@ secrets:
 
 mysql:
   database: "petclinic"
-  port: 3306 # Explicitly added MySQL port
+
+aws:
+  region: "ap-south-1"  # Add this section for AWS Secrets Manager
