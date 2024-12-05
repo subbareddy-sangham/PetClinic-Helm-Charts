@@ -1,0 +1,25 @@
+namespace: "petclinic-prod"
+environment: "prod"
+
+storage:
+  storageClassName: "mysql-storage-class"
+  provisioner: "kubernetes.io/aws-ebs"
+  volumeType: "gp2"
+  fsType: "ext4"
+  reclaimPolicy: "Retain"
+  allowVolumeExpansion: true
+  mountOption: "debug"
+
+persistence:
+  claimName: "mysql-pvc"
+  accessMode: "ReadWriteOnce"
+  size: "20Gi"
+
+image:
+  tag: "8.0" # MySQL version
+
+secrets:
+  mysqlSecretName: "mysql-secrets"
+
+mysql:
+  database: "petclinic"
