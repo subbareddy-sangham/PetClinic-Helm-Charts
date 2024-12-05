@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.storage.storageClassName | default "mysql-storage-class" }}
+provisioner: {{ .Values.storage.provisioner | default "kubernetes.io/aws-ebs" }} # Default provisioner for AWS
+parameters:
+  type: {{ .Values.storage.volumeType | default "gp2" }}                         # Volume type (e.g., gp2 for AWS)
+  fsType: {{ .Values.storage.fsType | default "ext4" }}                          # Filesystem type
+reclaimPolicy: {{ .Values.storage.reclaimPolicy | default "Retain" }}            # Reclaim policy (Retain/Delete)
+allowVolumeExpansion: {{ .Values.storage.allowVolumeExpansion | default true }}  # Enable volume expansion
+mountOptions:
+  - {{ .Values.storage.mountOption | default "debug" }}                          # Example mount option
