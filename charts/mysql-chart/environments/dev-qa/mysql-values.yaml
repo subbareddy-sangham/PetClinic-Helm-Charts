@@ -37,4 +37,7 @@ service:
 
 aws:
   region: "ap-south-1"                    # AWS region for Secrets Manager
-  serviceAccountName: "aws-secrets-sa"    # Name of the Service Account for IRSA
+
+serviceAccount:
+  name: "aws-secrets-sa"                  # Name of the Service Account for IRSA
+  iamRoleArn: "arn:aws:iam::905418425077:role/SecretsManagerAccessRole" # IAM Role ARN for the Service Account
