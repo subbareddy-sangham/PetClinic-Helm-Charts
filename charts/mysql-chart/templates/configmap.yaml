@@ -7,6 +7,7 @@ metadata:
     app: mysql
     environment: {{ .Values.environment | default "development" }}
 data:
-  MYSQL_DATABASE: {{ .Values.mysql.database }}                # Database name
-  MYSQL_PORT: {{ .Values.mysql.port | default "3306" }}       # MySQL Port
+  MYSQL_DATABASE: "{{ .Values.mysql.database | default "default_database" }}"
+  MYSQL_PORT: "{{ .Values.service.port | default "3306" }}"
+
   
