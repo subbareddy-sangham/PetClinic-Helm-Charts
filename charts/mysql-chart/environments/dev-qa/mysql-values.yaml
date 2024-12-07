@@ -20,7 +20,7 @@ image:
 
 secrets:
   mysqlSecretName: "mysql-secrets"
-  secretStoreName: "aws-secrets-manager"   # External secret store
+  secretStoreName: "aws-secretstore-mysql"   # External secret store
   refreshInterval: "1h"                   # How often to refresh secrets
   awsSecretKey: "mysql/credentials"       # AWS Secrets Manager secret name or path
 
