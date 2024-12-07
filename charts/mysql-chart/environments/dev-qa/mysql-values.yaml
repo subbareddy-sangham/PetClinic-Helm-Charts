@@ -24,7 +24,7 @@ secrets:
   mysqlSecretName: "mysql-secrets"        # Name of the Kubernetes Secret created from ExternalSecret
   secretStoreName: "aws-secretstore-mysql" # Name of the SecretStore resource
   refreshInterval: "1h"                   # How often the ExternalSecret syncs with AWS
-  awsSecretKey: "mysql/credentials"       # Path or name of the secret in AWS Secrets Manager
+  awsSecretKey: "dev-qa/petclinic-secrets"       # Path or name of the secret in AWS Secrets Manager
 
 mysql:
   database: "petclinic"                   # Name of the MySQL database to create
