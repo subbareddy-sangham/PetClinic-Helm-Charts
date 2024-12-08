@@ -17,21 +17,21 @@ spec:
     spec:
       containers:
         - name: petclinic
-          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag | default 'latest' }}"
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
           ports:
             - containerPort: 8081
           env:
             - name: MYSQL_URL
-              value: "jdbc:mysql://{{ .Values.env.MYSQL_HOST }}:3306/{{ .Values.mysql.auth.database }}"
+              value: "jdbc:mysql://{{ .Values.mysql.host | default 'mysql.default.svc.cluster.local' }}:3306/{{ .Values.mysql.auth.database }}"
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
-                  name: petclinic-secrets
+                  name: {{ .Values.secrets.mysqlSecretName | default 'petclinic-secrets' }}
                   key: MYSQL_USER
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: petclinic-secrets
+                  name: {{ .Values.secrets.mysqlSecretName | default 'petclinic-secrets' }}
                   key: MYSQL_PASSWORD
           readinessProbe:
             httpGet:
@@ -40,6 +40,8 @@ spec:
             initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -47,11 +49,13 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 5
           resources:
             requests:
-              memory: {{ .Values.app.resources.requests.memory }}
-              cpu: {{ .Values.app.resources.requests.cpu }}
+              memory: "{{ .Values.app.resources.requests.memory | default '512Mi' }}"
+              cpu: "{{ .Values.app.resources.requests.cpu | default '250m' }}"
             limits:
-              memory: {{ .Values.app.resources.limits.memory }}
-              cpu: {{ .Values.app.resources.limits.cpu }}
-      serviceAccountName: {{ .Values.aws.serviceAccountName }}
+              memory: "{{ .Values.app.resources.limits.memory | default '1Gi' }}"
+              cpu: "{{ .Values.app.resources.limits.cpu | default '500m' }}"
+      serviceAccountName: {{ .Values.aws.serviceAccountName | default 'eks-secrets-sa' }}
