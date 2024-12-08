@@ -50,3 +50,12 @@ aws:
 serviceAccount:
   name: "aws-secrets-sa"                  # Name of the Service Account for IRSA
   iamRoleArn: "arn:aws:iam::905418425077:role/SecretsManagerAccessRole" # IAM Role ARN for the Service Account
+
+# Readiness Probe Configuration
+readinessProbe:
+  enabled: true                          # Enable/disable readiness probe
+  initialDelaySeconds: 15                # Wait time before starting the probe
+  periodSeconds: 5                       # How often to run the probe
+  timeoutSeconds: 2                      # Timeout for each probe
+  successThreshold: 1                    # Minimum successful probes to consider ready
+  failureThreshold: 3                    # Maximum failed probes before marking unready
