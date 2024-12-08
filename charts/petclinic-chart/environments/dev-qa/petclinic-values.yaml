@@ -22,13 +22,13 @@ docker:
 
 sonarqube:
   projectKey: "petclinic-dev-qa"
-  serverUrl: "http://44.206.233.252:9000"  # Add this if the pipeline or app requires it
+  serverUrl: "http://44.206.233.252:9000"
 
 slack:
   channel: "#dev-qa"
 
 secrets:
-  awsSecrets: # Reference the AWS Secrets Manager keys instead of hardcoded values
+  awsSecrets:
     mysqlRootPasswordSecretName: "mysql-root-password"
     mysqlDatabaseSecretName: "mysql-database"
     mysqlUserSecretName: "mysql-user"
@@ -37,36 +37,14 @@ secrets:
     awsAccessKeyIdSecretName: "aws-access-key-id"
     awsSecretAccessKeySecretName: "aws-secret-access-key"
 
-# MySQL Configuration
 mysql:
-  enabled: true  # Ensure MySQL is enabled
-  image:
-    registry: docker.io
-    repository: bitnami/mysql
-    tag: "8.4.3"  # Ensure this matches the subchart version
+  enabled: true
   auth:
-    rootPassword: "use-aws-secret"  # AWS Secret reference for MySQL root password
-    username: "use-aws-secret"      # AWS Secret reference for MySQL user
-    password: "use-aws-secret"      # AWS Secret reference for MySQL password
-    database: "petclinic"           # MySQL database name
+    rootPassword: use-aws-secret
+    username: use-aws-secret
+    password: use-aws-secret
+    database: "petclinic"
 
-  primary:
-    persistence:
-      enabled: true
-      storageClass: gp2
-      accessModes:
-        - ReadWriteOnce
-      size: 20Gi
-
-  readinessProbe:
-    enabled: true
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    timeoutSeconds: 5
-    successThreshold: 1
-    failureThreshold: 5
-
-# Petclinic Application Configuration
 app:
   image:
     repository: 905418425077.dkr.ecr.ap-south-1.amazonaws.com/dev-petclinic-pro
@@ -81,6 +59,12 @@ app:
       cpu: "500m"
   env:
     MYSQL_HOST: mysql.default.svc.cluster.local
-    MYSQL_DATABASE: {{ .Values.mysql.auth.database }}
-    MYSQL_USER: {{ .Values.mysql.auth.username }}
-    MYSQL_PASSWORD: {{ .Values.mysql.auth.password }}
+    MYSQL_DATABASE: "petclinic"        # Directly referenced value
+    MYSQL_USER: "use-aws-secret"
+    MYSQL_PASSWORD: "use-aws-secret"
+  replicaCount: 2
+  service:
+    name: "petclinic-service"
+    type: "ClusterIP"
+    port: 80
+    targetPort: 8081
