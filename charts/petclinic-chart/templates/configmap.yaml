@@ -19,8 +19,15 @@ data:
   ECR_REPO_URL: "{{ .Values.docker.ecrRepoUrl }}"
   AWS_REGION_ECR: "{{ .Values.docker.awsRegion }}"
 
-  # SonarQube configurations (only non-sensitive data)
+  # SonarQube configurations
   SONARQUBE_PROJECT_KEY: "{{ .Values.sonarqube.projectKey }}"
+  SONARQUBE_TOKEN: "{{ .Values.secrets.awsSecrets.sonarqubeTokenSecretName }}"  # Added token reference for consistency
 
   # Slack configuration
   SLACK_CHANNEL: "{{ .Values.slack.channel }}"
+
+  # MySQL configurations
+  MYSQL_HOST: "{{ .Values.mysql.host | default 'mysql.default.svc.cluster.local' }}"
+  MYSQL_DATABASE: "{{ .Values.mysql.auth.database }}"
+  MYSQL_USER: "{{ .Values.mysql.auth.username }}"
+  MYSQL_PASSWORD: "{{ .Values.mysql.auth.password }}"
