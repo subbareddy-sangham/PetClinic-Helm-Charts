@@ -25,6 +25,6 @@ icon: https://spring.io/images/SPR-icon.svg  # URL for an icon representing the 
 
 dependencies:
   - name: mysql
-    version: 8.0.0                      # Use the exact version of the MySQL chart available in Bitnami repo
+    version: 8.0.25                      # Use the exact version of the MySQL chart available in Bitnami repo
     repository: https://charts.bitnami.com/bitnami
     condition: mysql.enabled            # Allows toggling the deployment of MySQL
