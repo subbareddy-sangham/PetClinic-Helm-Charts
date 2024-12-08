@@ -5,5 +5,5 @@ version: 1.0.0
 appVersion: "8.0.25" # MySQL version being deployed
 dependencies:
   - name: mysql
-    version: "8.8.25" # Replace with a valid version from Bitnami repo
+    version: "8.0.25" # Replace with a valid version from Bitnami repo
     repository: "https://charts.bitnami.com/bitnami"
