@@ -42,18 +42,20 @@ spec:
           volumeMounts:
             - name: mysql-storage
               mountPath: /var/lib/mysql
-          readinessProbe:                                  # Adding readiness probe
+          readinessProbe:
+            {{- if .Values.readinessProbe.enabled }}
             exec:
               command:
                 - mysqladmin
                 - ping
                 - "-h"
                 - "127.0.0.1"
-            initialDelaySeconds: 15                        # Wait time before starting probes
-            periodSeconds: 5                               # How often the probe runs
-            timeoutSeconds: 2                              # Probe timeout
-            successThreshold: 1                            # Minimum successful probes before readiness
-            failureThreshold: 3                            # Maximum failed probes before marking as unready
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 15 }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds | default 5 }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 2 }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold | default 1 }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
+            {{- end }}
       volumes:
         - name: mysql-storage
           persistentVolumeClaim:
