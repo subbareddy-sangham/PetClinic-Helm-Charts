@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: petclinic-app
+  namespace: {{ .Values.environment.namespace }}
   labels:
     app: petclinic
 spec:
-  replicas: {{ .Values.replicaCount | default 2 }}       # Allows setting replica count from values.yaml
+  replicas: {{ .Values.replicaCount | default 2 }}
   selector:
     matchLabels:
       app: petclinic
@@ -16,50 +17,41 @@ spec:
     spec:
       containers:
         - name: petclinic
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default 'latest' }}"  # Image and tag from values.yaml
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag | default 'latest' }}"
           ports:
             - containerPort: 8081
           env:
             - name: MYSQL_URL
-              value: "jdbc:mysql://{{ .Values.mysql.host | default 'mysql' }}:3306/{{ .Values.mysql.database | default 'petclinic' }}" # Configurable MySQL host and database
+              value: "jdbc:mysql://{{ .Values.env.MYSQL_HOST }}:3306/{{ .Values.mysql.auth.database }}"
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .Values.secrets.mysqlSecretName | default 'mysql-credentials' }}"  # Configurable MySQL secret name
+                  name: petclinic-secrets
                   key: MYSQL_USER
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .Values.secrets.mysqlSecretName | default 'mysql-credentials' }}"  # Configurable MySQL secret name
+                  name: petclinic-secrets
                   key: MYSQL_PASSWORD
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ .Values.secrets.mysqlSecretName | default 'mysql-credentials' }}"  # Configurable MySQL secret name
-                  key: MYSQL_ROOT_PASSWORD
-          readinessProbe:                                  # Readiness probe for the Petclinic app
+          readinessProbe:
             httpGet:
-              path: /actuator/health                       # Spring Boot actuator health endpoint
+              path: /actuator/health
               port: 8081
             initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 2
-            successThreshold: 1
-            failureThreshold: 3
-          livenessProbe:                                   # Liveness probe to ensure the app is running
+          livenessProbe:
             httpGet:
               path: /actuator/health
               port: 8081
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 2
-            successThreshold: 1
-            failureThreshold: 5
-          resources:                                       # Resource limits and requests
+          resources:
             requests:
-              memory: {{ .Values.resources.requests.memory | default "512Mi" }}
-              cpu: {{ .Values.resources.requests.cpu | default "250m" }}
+              memory: {{ .Values.app.resources.requests.memory }}
+              cpu: {{ .Values.app.resources.requests.cpu }}
             limits:
-              memory: {{ .Values.resources.limits.memory | default "1Gi" }}
-              cpu: {{ .Values.resources.limits.cpu | default "500m" }}
-      serviceAccountName: {{ .Values.aws.serviceAccountName | default "eks-secrets-sa" }}  # Optional service account
+              memory: {{ .Values.app.resources.limits.memory }}
+              cpu: {{ .Values.app.resources.limits.cpu }}
+      serviceAccountName: {{ .Values.aws.serviceAccountName }}
