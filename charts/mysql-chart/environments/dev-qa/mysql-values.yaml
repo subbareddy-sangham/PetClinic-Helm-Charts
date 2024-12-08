@@ -1,6 +1,8 @@
-namespace: "petclinic-dev-qa"          # Namespace for the deployment
-environment: "dev-qa"                 # Environment identifier (e.g., dev, staging, prod)
+# Namespace and Environment Configuration
+namespace: "petclinic-dev-qa"         # Namespace for the deployment
+environment: "dev-qa"                # Environment identifier (e.g., dev, staging, prod)
 
+# Storage Configuration
 storage:
   storageClassName: "mysql-storage-class"  # Name of the StorageClass for dynamic provisioning
   provisioner: "kubernetes.io/aws-ebs"    # Provisioner for AWS EBS
@@ -10,34 +12,41 @@ storage:
   allowVolumeExpansion: true              # Allow expanding the volume
   mountOption: "debug"                    # Optional mount option for troubleshooting
 
+# Persistence Configuration
 persistence:
   claimName: "mysql-pvc"                  # Name of the PersistentVolumeClaim
   accessMode: "ReadWriteOnce"             # PVC access mode
   size: "20Gi"                            # Requested storage size for the PVC
 
+# MySQL Image Configuration
 image:
   repository: "mysql"                     # Docker image repository
   tag: "8.0"                              # MySQL version tag
   pullPolicy: "IfNotPresent"              # Image pull policy
 
+# Secrets Configuration
 secrets:
-  mysqlSecretName: "mysql-secrets"        # Name of the Kubernetes Secret created from ExternalSecret
-  secretStoreName: "aws-secretstore-mysql" # Name of the SecretStore resource
-  refreshInterval: "1h"                   # How often the ExternalSecret syncs with AWS
-  awsSecretKey: "dev-qa/petclinic-secrets"       # Path or name of the secret in AWS Secrets Manager
+  mysqlSecretName: "mysql-dev-qa-mysql-credentials"  # Name of the Kubernetes Secret created from ExternalSecret
+  secretStoreName: "aws-secretstore-mysql"           # Name of the SecretStore resource
+  refreshInterval: "1h"                              # How often the ExternalSecret syncs with AWS
+  awsSecretKey: "dev-qa/petclinic-secrets"           # Path or name of the secret in AWS Secrets Manager
 
+# MySQL Database Configuration
 mysql:
   database: "petclinic"                   # Name of the MySQL database to create
 
+# Service Configuration
 service:
   name: "mysql-service"                   # Name of the Kubernetes Service
   type: "ClusterIP"                       # Service type (ClusterIP, NodePort, LoadBalancer)
   port: "3306"                            # Service port
   targetPort: "3306"                      # Port on the container
 
+# AWS Configuration
 aws:
   region: "ap-south-1"                    # AWS region for Secrets Manager
 
+# Service Account for IRSA
 serviceAccount:
   name: "aws-secrets-sa"                  # Name of the Service Account for IRSA
   iamRoleArn: "arn:aws:iam::905418425077:role/SecretsManagerAccessRole" # IAM Role ARN for the Service Account
