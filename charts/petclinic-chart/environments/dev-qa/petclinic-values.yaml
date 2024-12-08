@@ -35,3 +35,51 @@ secrets:
     sonarqubeTokenSecretName: "sonarqube-token"
     awsAccessKeyIdSecretName: "aws-access-key-id"
     awsSecretAccessKeySecretName: "aws-secret-access-key"
+
+# MySQL Configuration
+mysql:
+  enabled: true  # Ensure MySQL is enabled
+  image:
+    registry: docker.io
+    repository: bitnami/mysql
+    tag: "8.4.3"  # Ensure this matches the subchart version
+  auth:
+    rootPassword: "use-aws-secret"  # AWS Secret reference for MySQL root password
+    username: "use-aws-secret"      # AWS Secret reference for MySQL user
+    password: "use-aws-secret"      # AWS Secret reference for MySQL password
+    database: "petclinic"           # MySQL database name
+
+  primary:
+    persistence:
+      enabled: true
+      storageClass: gp2
+      accessModes:
+        - ReadWriteOnce
+      size: 20Gi
+
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 5
+
+# Petclinic Application Configuration
+app:
+  image:
+    repository: 905418425077.dkr.ecr.ap-south-1.amazonaws.com/dev-petclinic-pro
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  env:
+    MYSQL_HOST: mysql.default.svc.cluster.local
+    MYSQL_DATABASE: {{ .Values.mysql.auth.database }}
+    MYSQL_USER: {{ .Values.mysql.auth.username }}
+    MYSQL_PASSWORD: {{ .Values.mysql.auth.password }}
