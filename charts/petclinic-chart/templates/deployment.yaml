@@ -22,7 +22,7 @@ spec:
             - containerPort: 8081
           env:
             - name: MYSQL_URL
-              value: "jdbc:mysql://{{ .Values.app.env.MYSQL_HOST | default 'mysql.default.svc.cluster.local' }}:3306/{{ .Values.mysql.auth.database | default 'petclinic' }}"
+              value: "jdbc:mysql://{{ .Values.app.env.MYSQL_HOST }}:3306/{{ .Values.mysql.auth.database }}"
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
