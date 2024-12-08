@@ -10,23 +10,20 @@ def call(Map params = [:]) {
     String shortCommitSha = params.shortCommitSha
     String buildNumber = env.BUILD_NUMBER ?: '0'
 
-    // Updated ECR image tag with full path
+    // Generate the full image tag
     String imageTag = "${shortCommitSha}-build-${buildNumber}"
-    String ecrImageTag = "${repoUrl}/${dockerImageName}:${imageTag}"
+    String fullImageName = "${repoUrl}:${imageTag}"
 
-    // Build Docker Image
-    sh "docker build -t ${ecrImageTag} ."
+    // Build Docker image
+    sh "docker build -t ${fullImageName} ."
 
-    // Push Docker Image to ECR
-    withCredentials([[ 
-        $class: 'AmazonWebServicesCredentialsBinding', 
-        credentialsId: awsCredentialsId 
-    ]]) {
+    // Push Docker image to ECR
+    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: awsCredentialsId]]) {
         sh """
         aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${repoUrl}
-        docker push ${ecrImageTag}
+        docker push ${fullImageName}
         """
     }
 
-    echo "Successfully built and pushed Docker image: ${ecrImageTag}"
+    echo "Successfully built and pushed Docker image: ${fullImageName}"
 }
