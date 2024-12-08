@@ -17,7 +17,7 @@ trivy:
   cache: "/var/lib/jenkins/trivy-db"
 
 docker:
-  ecrRepoUrl: "905418425077.dkr.ecr.ap-south-1.amazonaws.com/dev-petclinic-pro"
+  ecrRepoUrl: "905418425077.dkr.ecr.ap-south-1.amazonaws.com/dev-qa/petclinic"
   awsRegion: "ap-south-1"
 
 sonarqube:
