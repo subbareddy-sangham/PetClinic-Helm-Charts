@@ -22,6 +22,7 @@ docker:
 
 sonarqube:
   projectKey: "petclinic-dev-qa"
+  serverUrl: "http://44.206.233.252:9000"  # Add this if the pipeline or app requires it
 
 slack:
   channel: "#dev-qa"
