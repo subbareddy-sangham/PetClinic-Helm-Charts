@@ -42,6 +42,18 @@ spec:
           volumeMounts:
             - name: mysql-storage
               mountPath: /var/lib/mysql
+          readinessProbe:                                  # Adding readiness probe
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - "-h"
+                - "127.0.0.1"
+            initialDelaySeconds: 15                        # Wait time before starting probes
+            periodSeconds: 5                               # How often the probe runs
+            timeoutSeconds: 2                              # Probe timeout
+            successThreshold: 1                            # Minimum successful probes before readiness
+            failureThreshold: 3                            # Maximum failed probes before marking as unready
       volumes:
         - name: mysql-storage
           persistentVolumeClaim:
