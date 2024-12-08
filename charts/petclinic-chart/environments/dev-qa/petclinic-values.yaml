@@ -48,7 +48,7 @@ mysql:
 app:
   image:
     repository: 905418425077.dkr.ecr.ap-south-1.amazonaws.com/dev-qa/petclinic
-    tag: "fcf04e7-build-88" 
+    tag: "fcf04e7-build-88"  # Use the specific Docker image tag
     pullPolicy: IfNotPresent
   resources:
     requests:
