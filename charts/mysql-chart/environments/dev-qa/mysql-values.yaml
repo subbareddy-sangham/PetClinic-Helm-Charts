@@ -54,7 +54,7 @@ serviceAccount:
 # Readiness Probe Configuration
 readinessProbe:
   enabled: true                          # Enable/disable readiness probe
-  initialDelaySeconds: 15                # Wait time before starting the probe
+  initialDelaySeconds: 60                # Wait time before starting the probe
   periodSeconds: 5                       # How often to run the probe
   timeoutSeconds: 2                      # Timeout for each probe
   successThreshold: 1                    # Minimum successful probes to consider ready
