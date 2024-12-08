@@ -47,8 +47,8 @@ mysql:
 
 app:
   image:
-    repository: 905418425077.dkr.ecr.ap-south-1.amazonaws.com/dev-petclinic-pro
-    tag: "latest"
+    repository: 905418425077.dkr.ecr.ap-south-1.amazonaws.com/dev-qa/petclinic
+    tag: "fcf04e7-build-88" 
     pullPolicy: IfNotPresent
   resources:
     requests:
