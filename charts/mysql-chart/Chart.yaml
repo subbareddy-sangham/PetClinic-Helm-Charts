@@ -2,4 +2,4 @@ apiVersion: v2
 name: mysql-chart
 description: A Helm chart for deploying a MySQL database on Kubernetes
 version: 1.0.0
-appVersion: "8.0.25" # MySQL version being deployed
+appVersion: "8.4.3" # MySQL version being deployed
