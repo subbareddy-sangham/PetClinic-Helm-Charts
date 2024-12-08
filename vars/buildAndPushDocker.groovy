@@ -2,17 +2,17 @@ def call(Map params = [:]) {
     assert params.containsKey('repoUrl') : "Missing required parameter: repoUrl"
     assert params.containsKey('awsCredentialsId') : "Missing required parameter: awsCredentialsId"
     assert params.containsKey('dockerImageName') : "Missing required parameter: dockerImageName"
+    assert params.containsKey('shortCommitSha') : "Missing required parameter: shortCommitSha"
 
     String repoUrl = params.repoUrl
     String awsCredentialsId = params.awsCredentialsId
     String dockerImageName = params.dockerImageName
-    String prId = params.prId ?: "default" // Optional fallback
-    String shortCommitSha = params.shortCommitSha ?: "latest" // Optional fallback
+    String shortCommitSha = params.shortCommitSha
     String buildNumber = env.BUILD_NUMBER ?: '0'
 
-    // Updated ECR image tag
-    String imageTag = "${prId}-${shortCommitSha}-build-${buildNumber}"
-    String ecrImageTag = "${repoUrl}:${imageTag}"
+    // Updated ECR image tag with full path
+    String imageTag = "${shortCommitSha}-build-${buildNumber}"
+    String ecrImageTag = "${repoUrl}/${dockerImageName}:${imageTag}"
 
     // Build Docker Image
     sh "docker build -t ${ecrImageTag} ."
