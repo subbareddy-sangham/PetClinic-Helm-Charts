@@ -19,9 +19,11 @@ data:
   ECR_REPO_URL: "{{ .Values.docker.ecrRepoUrl }}"
   AWS_REGION_ECR: "{{ .Values.docker.awsRegion }}"
 
-  # SonarQube configurations
+   # SonarQube configurations
   SONARQUBE_PROJECT_KEY: "{{ .Values.sonarqube.projectKey }}"
-  SONARQUBE_TOKEN: "{{ .Values.secrets.awsSecrets.sonarqubeTokenSecretName }}"  # Added token reference for consistency
+  SONARQUBE_TOKEN: "{{ .Values.secrets.awsSecrets.sonarqubeTokenSecretName }}"
+  SONARQUBE_URL: "http://sonarqube.yourdomain.com"  # Add this if needed
+
 
   # Slack configuration
   SLACK_CHANNEL: "{{ .Values.slack.channel }}"
