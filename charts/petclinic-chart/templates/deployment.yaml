@@ -6,7 +6,7 @@ metadata:
   labels:
     app: petclinic
 spec:
-  replicas: {{ .Values.replicaCount | default 2 }}
+  replicas: {{ .Values.app.replicaCount | default 2 }}
   selector:
     matchLabels:
       app: petclinic
@@ -17,23 +17,22 @@ spec:
     spec:
       containers:
         - name: petclinic
-          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag | default 'latest' }}"
           ports:
             - containerPort: 8081
           env:
             - name: MYSQL_URL
-              value: "jdbc:mysql://{{ .Values.mysql.host | default 'mysql.default.svc.cluster.local' }}:3306/{{ .Values.mysql.auth.database | default 'petclinic' }}"
+              value: "jdbc:mysql://{{ .Values.app.env.MYSQL_HOST | default 'mysql.default.svc.cluster.local' }}:3306/{{ .Values.mysql.auth.database | default 'petclinic' }}"
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.mysqlSecretName | default 'petclinic-secrets' }}
+                  name: {{ .Values.secrets.awsSecrets.mysqlUserSecretName | default 'petclinic-secrets' }}
                   key: MYSQL_USER
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.mysqlSecretName | default 'petclinic-secrets' }}
+                  name: {{ .Values.secrets.awsSecrets.mysqlPasswordSecretName | default 'petclinic-secrets' }}
                   key: MYSQL_PASSWORD
-
           readinessProbe:
             httpGet:
               path: /actuator/health
